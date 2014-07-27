@@ -23,6 +23,11 @@ class RBTree{
 private:
     RBTNode *root;
     
+    void insertRoot(RBTNode *n);
+    void insertWithBlackParents(RBTNode *n);
+    void insertWithRedParentAndUncle(RBTNode *n);
+    void insertWithLeftRotation(RBTNode *n);
+    void insertWithRightRotation(RBTNode *n);
 public:
     RBTree(){root = NULL;};
     RBTree(int a);
