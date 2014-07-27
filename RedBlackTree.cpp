@@ -10,9 +10,6 @@
 #include <vector>
 
 
-void rotate_left(RBTNode *n);
-void rotate_right(RBTNode *n);
-
 RBTNode* createRoot(int a)
 {
     RBTNode *node = new RBTNode;
@@ -64,6 +61,7 @@ void RBTree:: insertSertion(int a)
     
     if (root) {
         RBTNode *tmpnod = root;
+        printTree();
         while (tmpnod) {
             if (a >= tmpnod->data) {
                 if (tmpnod->rightChild) {
@@ -181,7 +179,7 @@ void RBTree:: insertWithRightRotation(RBTNode *n)
     }
 }
 
-void rotate_left(RBTNode *node)
+void RBTree:: rotate_left(RBTNode *node)
 {
     RBTNode *tmpN = node->rightChild;
     node->rightChild = tmpN->leftChild;
@@ -190,13 +188,16 @@ void rotate_left(RBTNode *node)
     node->parent = tmpN;
 }
 
-void rotate_right(RBTNode *node)
+void RBTree:: rotate_right(RBTNode *node)
 {
     RBTNode *tmpN = node->leftChild;
     tmpN->parent = node->parent;
     tmpN->rightChild = node;
     node->parent = tmpN;
     node->leftChild = tmpN->rightChild;
+    if (tmpN->parent == NULL) {
+        root = tmpN;
+    }
 }
 //-------------------------------------------------end insertion--------------------------------------------------------------
 
@@ -233,12 +234,12 @@ void printNode(RBTNode* node)
     if (node->rightChild) {
         printNode(node->rightChild);
     }
+    printf("\n");
 }
 
 void RBTree::printTree()
 {
     printNode(root);
-    printf("\n");
     std::vector<RBTNode> arr;
     if (root) {
         arr.push_back(*root);
@@ -255,5 +256,6 @@ void RBTree::printTree()
             cur++;
         }
     }
+    printf("\n");
 }
 

@@ -28,6 +28,9 @@ private:
     void insertWithRedParentAndUncle(RBTNode *n);
     void insertWithLeftRotation(RBTNode *n);
     void insertWithRightRotation(RBTNode *n);
+    void rotate_left(RBTNode *n);
+    void rotate_right(RBTNode *n);
+    
 public:
     RBTree(){root = NULL;};
     RBTree(int a);
