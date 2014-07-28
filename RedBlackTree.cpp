@@ -41,15 +41,6 @@ RBTree::~RBTree()
     removeAllNodes();
 }
 
-bool RBTree::getRootData(int *a) const
-{
-    if (root) {
-        *a = root->data;
-        return true;
-    }
-    return false;
-}
-
 //---------------------------------------------------------------insertion-----------------------------------------------------------------
 void RBTree:: insertSertion(int a)
 {
@@ -160,30 +151,12 @@ void RBTree:: insertWithLeftRotation(RBTNode *n)
     
     if ((n == n->parent->rightChild) && (n->parent == g->leftChild)) {
         //left rotation
-        RBTNode *p = n->parent;
-        g->leftChild = n;
-        p->parent = n;
-        p->rightChild = n->leftChild;
-        n->parent = g;
-        if (n->leftChild) {
-            n->leftChild->parent = p;
-        }
-        n->leftChild = p;
-        
+        leftRotation(n->parent);
         n = n->leftChild;
         
     } else if ((n == n->parent->leftChild) && (n->parent == g->rightChild)) {
         // right rotation
-        RBTNode *p = n->parent;
-        g->rightChild = n;
-        p->parent = n;
-        p->leftChild = n->rightChild;
-        if (n->rightChild) {
-            n->rightChild->parent = p;
-        }
-        n->parent = g;
-        n->rightChild = p;
-        
+        rightRotation(n->parent);
         n = n->rightChild;
     }
     insertWithRightRotation(n);
@@ -196,49 +169,119 @@ void RBTree:: insertWithRightRotation(RBTNode *n)
     g->isRed = true;
     
     if (n == n->parent->leftChild){
-        p->parent = g->parent;
-        if (g->parent) {
-            if (g == g->parent->leftChild) {
-                g->parent->leftChild = p;
-            }
-            else{
-                g->parent->rightChild = p;
-            }
-        }
-        else{
-            root = p;
-        }
-        g->parent = p;
-        g->leftChild = p->rightChild;
-        if (p->rightChild) {
-            p->rightChild->parent = g;
-        }
-        
-        p->rightChild = g;
+        rightRotation(g);
     }
     else{
-        p->parent = g->parent;
-        if (g->parent) {
-            if (g == g->parent->leftChild) {
-                g->parent->leftChild = p;
-            }
-            else{
-                g->parent->rightChild = p;
-            }
-        }
-        else{
-            root = p;
-        }
-        g->parent = p;
-        g->rightChild = p->leftChild;
-        if (p->leftChild) {
-            p->leftChild->parent = g;
-        }
-        
-        p->leftChild = g;
+        leftRotation(g);
     }
 }
 //-----------------------------------------------------------------end insertion-----------------------------------------------------------------
+
+//----------------------------------------------------------------rotation of node------------------------------------------------------------
+void RBTree:: rightRotation(RBTNode *node)
+{
+    RBTNode *n= node->leftChild;
+    RBTNode *p = node->parent;
+    n->parent = p;
+    if (p) {
+        if (node == p->leftChild) {
+            p->leftChild = n;
+        }
+        else{
+            p->rightChild = n;
+        }
+    }
+    else{
+        root = n;
+    }
+    
+    node->parent = n;
+    node->leftChild = n->rightChild;
+    if (n->rightChild) {
+        n->rightChild->parent = node;
+    }
+    n->rightChild = node;
+}
+
+void RBTree:: leftRotation(RBTNode *node)
+{
+    RBTNode *n= node->rightChild;
+    RBTNode *p = node->parent;
+    n->parent = p;
+    if (p) {
+        if (node == p->leftChild) {
+            p->leftChild = n;
+        }
+        else{
+            p->rightChild = n;
+        }
+    }
+    else{
+        root = n;
+    }
+    
+    node->parent = n;
+    node->rightChild = n->leftChild;
+    if (n->leftChild) {
+        n->leftChild->parent = node;
+    }
+    n->leftChild= node;
+}
+//----------------------------------------------------end rotation-----------------------------------------------------------------------------
+
+RBTNode *sibling(RBTNode* n)
+{
+    if (n->parent == NULL) {
+        return NULL;
+    }
+    if (n == n->parent->leftChild){
+        return n->parent->rightChild;
+    }
+    else{
+        return n->parent->leftChild;
+    }
+}
+
+void RBTree:: removeNode(int a)
+{
+    RBTNode *nodeToRemove = findNode(a);
+    if (nodeToRemove) {
+        if (nodeToRemove->leftChild == NULL && nodeToRemove->rightChild == NULL) {
+            if (nodeToRemove->isRed) {
+                if (nodeToRemove == nodeToRemove->parent->leftChild) {
+                    nodeToRemove->parent->leftChild = NULL;
+                }
+                else{
+                    nodeToRemove->parent->rightChild = NULL;
+                }
+                delete nodeToRemove;
+            }
+            else{
+                //the node to remove is not red node
+                
+            }
+        }
+        else if (nodeToRemove->isRed){
+            if (nodeToRemove->leftChild) {
+                
+            }
+            else{
+                
+            }
+        }
+        else{
+            if (nodeToRemove->leftChild) {
+                
+            }
+            else{
+                
+            }
+        }
+    }
+    else{
+        printf("no such node\n");
+    }
+}
 
 void deleteNode(RBTNode* node)
 {
@@ -258,6 +301,39 @@ void deleteNode(RBTNode* node)
 void RBTree::removeAllNodes()
 {
     deleteNode(root);
+    root = NULL;
+}
+
+//------------------------------------------------------------find a node----------------------------------------------------------------------
+RBTNode* RBTree:: findNode(int a)
+{
+    if (root) {
+        RBTNode *tmpNode = root;
+        while (tmpNode->data != a) {
+            if (tmpNode->data > a) {
+                if (tmpNode->rightChild) {
+                    tmpNode = tmpNode->rightChild;
+                }
+                else{
+                    return NULL;
+                }
+            }
+            else{
+                if (tmpNode->leftChild) {
+                    tmpNode = tmpNode->leftChild;
+                }
+                else{
+                    return NULL;
+                }
+            }
+        }
+        
+        return tmpNode;
+    }
+    else{
+        printf("it is an empty red-black-tree");
+        return NULL;
+    }
 }
 
 void printNode(RBTNode* node)

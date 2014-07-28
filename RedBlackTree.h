@@ -28,6 +28,9 @@ private:
     void insertWithRedParentAndUncle(RBTNode *n);
     void insertWithLeftRotation(RBTNode *n);
     void insertWithRightRotation(RBTNode *n);
+    void rightRotation(RBTNode *node);
+    void leftRotation(RBTNode *node);
+    RBTNode* findNode(int a);
     
 public:
     RBTree(){root = NULL;};
@@ -36,7 +39,6 @@ public:
     RBTree(const RBTree &rbTree);
     ~RBTree();
     
-    bool getRootData(int *a) const;
     void insertSertion(int a);
     void removeNode(int a);
     void removeAllNodes();
