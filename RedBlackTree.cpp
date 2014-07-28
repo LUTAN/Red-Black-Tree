@@ -61,7 +61,6 @@ void RBTree:: insertSertion(int a)
     
     if (root) {
         RBTNode *tmpnod = root;
-        printTree();
         while (tmpnod) {
             if (a >= tmpnod->data) {
                 if (tmpnod->rightChild) {
@@ -97,21 +96,26 @@ void RBTree:: insertSertion(int a)
 
 RBTNode *getGrandparent(const RBTNode *n)
 {
-    if ((n != NULL) && (n->parent != NULL))
-        return n->parent->parent;
-    else
+    if ((n != NULL) && (n->parent != NULL)){
+        return (n->parent)->parent;
+    }
+    else{
         return NULL;
+    }
 }
 
 RBTNode *getUncle(const RBTNode *n)
 {
     RBTNode *g = getGrandparent(n);
-    if (g == NULL)
+    if (g == NULL){
         return NULL; // No grandparent means no uncle
-    if (n->parent == g->leftChild)
+    }
+    if (n->parent == g->leftChild){
         return g->rightChild;
-    else
+    }
+    else{
         return g->leftChild;
+    }
 }
 
 void RBTree:: insertRoot(RBTNode *n)
@@ -155,11 +159,31 @@ void RBTree:: insertWithLeftRotation(RBTNode *n)
     RBTNode *g = getGrandparent(n);
     
     if ((n == n->parent->rightChild) && (n->parent == g->leftChild)) {
-        rotate_left(n->parent);
+        //left rotation
+        RBTNode *p = n->parent;
+        g->leftChild = n;
+        p->parent = n;
+        p->rightChild = n->leftChild;
+        n->parent = g;
+        if (n->leftChild) {
+            n->leftChild->parent = p;
+        }
+        n->leftChild = p;
+        
         n = n->leftChild;
         
     } else if ((n == n->parent->leftChild) && (n->parent == g->rightChild)) {
-        rotate_right(n->parent);
+        // right rotation
+        RBTNode *p = n->parent;
+        g->rightChild = n;
+        p->parent = n;
+        p->leftChild = n->rightChild;
+        if (n->rightChild) {
+            n->rightChild->parent = p;
+        }
+        n->parent = g;
+        n->rightChild = p;
+        
         n = n->rightChild;
     }
     insertWithRightRotation(n);
@@ -167,36 +191,51 @@ void RBTree:: insertWithLeftRotation(RBTNode *n)
 
 void RBTree:: insertWithRightRotation(RBTNode *n)
 {
-    RBTNode *g = getGrandparent(n);
-    
-    n->parent->isRed = false;
+    RBTNode *g = getGrandparent(n), *p = n->parent;
+    p->isRed = false;
     g->isRed = true;
+    
     if (n == n->parent->leftChild){
-        rotate_right(g);
+        p->parent = g->parent;
+        if (g->parent) {
+            if (g == g->parent->leftChild) {
+                g->parent->leftChild = p;
+            }
+            else{
+                g->parent->rightChild = p;
+            }
+        }
+        else{
+            root = p;
+        }
+        g->parent = p;
+        g->leftChild = p->rightChild;
+        if (p->rightChild) {
+            p->rightChild->parent = g;
+        }
+        
+        p->rightChild = g;
     }
     else{
-        rotate_left(g);
-    }
-}
-
-void RBTree:: rotate_left(RBTNode *node)
-{
-    RBTNode *tmpN = node->rightChild;
-    node->rightChild = tmpN->leftChild;
-    tmpN->parent = node->parent;
-    tmpN->leftChild = node;
-    node->parent = tmpN;
-}
-
-void RBTree:: rotate_right(RBTNode *node)
-{
-    RBTNode *tmpN = node->leftChild;
-    tmpN->parent = node->parent;
-    tmpN->rightChild = node;
-    node->parent = tmpN;
-    node->leftChild = tmpN->rightChild;
-    if (tmpN->parent == NULL) {
-        root = tmpN;
+        p->parent = g->parent;
+        if (g->parent) {
+            if (g == g->parent->leftChild) {
+                g->parent->leftChild = p;
+            }
+            else{
+                g->parent->rightChild = p;
+            }
+        }
+        else{
+            root = p;
+        }
+        g->parent = p;
+        g->rightChild = p->leftChild;
+        if (p->leftChild) {
+            p->leftChild->parent = g;
+        }
+        
+        p->leftChild = g;
     }
 }
 //-----------------------------------------------------------------end insertion-----------------------------------------------------------------
@@ -234,28 +273,11 @@ void printNode(RBTNode* node)
     if (node->rightChild) {
         printNode(node->rightChild);
     }
-    printf("\n");
 }
 
 void RBTree::printTree()
 {
     printNode(root);
-    std::vector<RBTNode> arr;
-    if (root) {
-        arr.push_back(*root);
-        int cur = 0;
-        while (cur < arr.size()) {
-            RBTNode node = arr[cur];
-            printf("%d--", node.data);
-            if (node.leftChild) {
-                arr.push_back(*node.leftChild);
-            }
-            if (node.rightChild) {
-                arr.push_back(*node.rightChild);
-            }
-            cur++;
-        }
-    }
     printf("\n");
 }
 
