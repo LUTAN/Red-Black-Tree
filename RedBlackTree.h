@@ -22,6 +22,7 @@ struct RBTNode {
 class RBTree{
 private:
     RBTNode *root;
+    
 public:
     RBTree(){root = NULL;};
     RBTree(int a);
@@ -31,6 +32,9 @@ public:
     
     bool getRootData(int *a) const;
     void insertSertion(int a);
+    void removeNode(int a);
+    void removeAllNodes();
+    void printTree();
 };
 
 
