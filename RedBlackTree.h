@@ -1,13 +1,13 @@
 //
 //  RedBlackTree.h
-//  SkipList
+//  DataStructure
 //
 //  Created by lutan on 14-7-27.
 //  Copyright (c) 2014年 Lutan. All rights reserved.
 //
 
-#ifndef __SkipList__RedBlackTree__
-#define __SkipList__RedBlackTree__
+#ifndef __DataStructure__RedBlackTree__
+#define __DataStructure__RedBlackTree__
 
 #include <iostream>
 
@@ -57,4 +57,4 @@ public:
 };
 
 
-#endif /* defined(__SkipList__RedBlackTree__) */
+#endif /* defined(__DataStructure__RedBlackTree__) */

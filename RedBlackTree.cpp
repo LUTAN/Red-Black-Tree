@@ -1,6 +1,6 @@
 //
 //  RedBlackTree.cpp
-//  SkipList
+//  DataStructure
 //
 //  Created by lutan on 14-7-27.
 //  Copyright (c) 2014年 Lutan. All rights reserved.
@@ -292,7 +292,6 @@ RBTNode *sibling(RBTNode* n)
 
 void RBTree:: removeNode(int a)
 {
-    printf("delete:%d\n", a);
     RBTNode *nodeToRemove = findNode(a);
     if (nodeToRemove) {
         if (nodeToRemove->leftChild != NULL && nodeToRemove->rightChild != NULL) {
