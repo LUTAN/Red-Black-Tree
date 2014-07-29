@@ -63,6 +63,7 @@ RBTree::RBTree(RBTNode node)
 RBTree::RBTree(const RBTree &rbTree)
 {
     RBTNode* node = rbTree.root;
+    root = NULL;
     if (node) {
         root = new RBTNode;
         root->parent = NULL;
