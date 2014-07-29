@@ -31,6 +31,13 @@ private:
     void rightRotation(RBTNode *node);
     void leftRotation(RBTNode *node);
     RBTNode* findNode(int a);
+    void delete_one_child(RBTNode *n);
+    void delete_case1(RBTNode *n);
+    void delete_case2(RBTNode *n);
+    void delete_case3(RBTNode *n);
+    void delete_case4(RBTNode *n);
+    void delete_case5(RBTNode *n);
+    void delete_case6(RBTNode *n);
     
 public:
     RBTree(){root = NULL;};
