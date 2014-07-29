@@ -50,6 +50,7 @@ public:
     void removeNode(int a);
     void removeAllNodes();
     void copySubtree(RBTNode* des, RBTNode* source);
+    void operator=(const RBTree &tree);
     bool checkRBTree();
     
     void printTree();

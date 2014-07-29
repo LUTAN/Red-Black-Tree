@@ -63,8 +63,6 @@ RBTree::RBTree(RBTNode node)
 RBTree::RBTree(const RBTree &rbTree)
 {
     RBTNode* node = rbTree.root;
-    root = NULL;
-    removeAllNodes();
     if (node) {
         root = new RBTNode;
         root->parent = NULL;
@@ -78,6 +76,16 @@ RBTree::~RBTree()
 }
 //----------------------------------------------------end constructor and destructor--------------------------------------------------------
 
+void RBTree::operator=(const RBTree &tree)
+{
+    removeAllNodes();
+    RBTNode* node = tree.root;
+    if (node) {
+        root = new RBTNode;
+        root->parent = NULL;
+        copySubtree(root, node);
+    }
+}
 
 //---------------------------------------------------------------insertion-----------------------------------------------------------------
 void RBTree:: insertSertion(int a)
