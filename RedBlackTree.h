@@ -50,6 +50,7 @@ public:
     void removeNode(int a);
     void removeAllNodes();
     void printTree();
+    bool checkRBTree();
 };
 
 

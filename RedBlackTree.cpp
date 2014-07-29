@@ -9,6 +9,7 @@
 #include "RedBlackTree.h"
 #include <vector>
 
+bool checkSubTree(RBTNode *node);
 
 RBTNode* createRoot(int a)
 {
@@ -21,6 +22,7 @@ RBTNode* createRoot(int a)
     return node;
 }
 
+//-------------------------------------------------------- constructor and destructor--------------------------------------------------------
 RBTree::RBTree(int a)
 {
     root = createRoot(a);
@@ -40,6 +42,8 @@ RBTree::~RBTree()
 {
     removeAllNodes();
 }
+//----------------------------------------------------end constructor and destructor--------------------------------------------------------
+
 
 //---------------------------------------------------------------insertion-----------------------------------------------------------------
 void RBTree:: insertSertion(int a)
@@ -457,6 +461,8 @@ void RBTree::removeAllNodes()
     deleteNode(root);
     root = NULL;
 }
+//------------------------------------------------------------end  delete a node----------------------------------------------------------------
+
 
 //------------------------------------------------------------find a node----------------------------------------------------------------------
 RBTNode* RBTree:: findNode(int a)
@@ -489,7 +495,72 @@ RBTNode* RBTree:: findNode(int a)
         return NULL;
     }
 }
+//-----------------------------------------------------------------------------------------------------------------------------------------------
 
+
+//------------------------------------------------------chekc the validation of tree------------------------------------------------------------
+bool RBTree:: checkRBTree()
+{
+    if (root){
+        if (root->isRed) {
+            return false;
+        }
+    }
+    return checkSubTree(root);
+}
+
+bool checkBlackLength(RBTNode *node, int* a)
+{
+    if (node == NULL) {
+        *a = 1;
+        return true;
+    }
+    int b = node->isRed? 0 : 1;
+    int leftLen, rightLen;
+    bool equal = checkBlackLength(node->leftChild, &leftLen);
+    if (!equal) {
+        return false;
+    }
+    equal = checkBlackLength(node->rightChild, &rightLen);
+    if (!equal) {
+        return false;
+    }
+    
+    if (leftLen == rightLen) {
+        *a = rightLen + b;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+
+bool checkSubTree(RBTNode *node)
+{
+    if (node == NULL) {
+        return true;
+    }
+    if (node->isRed) {
+        if (node->leftChild) {
+            if (node->leftChild->isRed) {
+                return false;
+            }
+        }
+        if (node->rightChild) {
+            if (node->rightChild->isRed) {
+                return false;
+            }
+        }
+    }
+    int a;
+    bool ok = checkBlackLength(node, &a);
+    return ok;
+}
+//---------------------------------------------------end chekc the validation of tree------------------------------------------------------------
+
+
+//---------------------------------------------------print all nodes of tree------------------------------------------------------------
 void printNode(RBTNode* node)
 {
     if (node == NULL) {
