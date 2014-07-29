@@ -49,8 +49,10 @@ public:
     void insertSertion(int a);
     void removeNode(int a);
     void removeAllNodes();
-    void printTree();
+    void copySubtree(RBTNode* des, RBTNode* source);
     bool checkRBTree();
+    
+    void printTree();
 };
 
 

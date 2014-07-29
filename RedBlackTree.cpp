@@ -22,6 +22,33 @@ RBTNode* createRoot(int a)
     return node;
 }
 
+void RBTree:: copySubtree(RBTNode* des, RBTNode* source)
+{
+    if (source == NULL) {
+        des = NULL;
+        return;
+    }
+    RBTNode *left = NULL, *right = NULL;
+    des->data = source->data;
+    des->isRed = source->isRed;
+    if (source->leftChild) {
+        left = new RBTNode;
+        copySubtree(left, source->leftChild);
+    }
+    if (source->rightChild) {
+        right = new RBTNode;
+        copySubtree(right, source->rightChild);
+    }
+    des->leftChild = left;
+    des->rightChild = right;
+    if (left) {
+        left->parent = des;
+    }
+    if (right) {
+        right->parent = des;
+    }
+}
+
 //-------------------------------------------------------- constructor and destructor--------------------------------------------------------
 RBTree::RBTree(int a)
 {
@@ -35,7 +62,14 @@ RBTree::RBTree(RBTNode node)
 
 RBTree::RBTree(const RBTree &rbTree)
 {
-    
+    RBTNode* node = rbTree.root;
+    root = NULL;
+    removeAllNodes();
+    if (node) {
+        root = new RBTNode;
+        root->parent = NULL;
+        copySubtree(root, node);
+    }
 }
 
 RBTree::~RBTree()
@@ -285,7 +319,7 @@ void RBTree:: removeNode(int a)
 void RBTree:: delete_one_child(RBTNode *n)
 {
     if (n->rightChild != NULL && n->leftChild != NULL) {
-        printf("error:with two non leaf childrens-------------------------------------------------------------------------------------------\n");
+        printf("error:with two non leaf childrens-------------------------------\n");
     }
     if (n == root) {
         delete root;
@@ -534,7 +568,6 @@ bool checkBlackLength(RBTNode *node, int* a)
         return false;
     }
 }
-
 
 bool checkSubTree(RBTNode *node)
 {
